@@ -1,0 +1,15 @@
+{
+	"require": {
+		"php": "5.6.*",
+		"ext-phalcon": "2.0.*"
+	},
+	"require-dev": {
+		"heroku/heroku-buildpack-php": "*"
+	},
+	"scripts": {
+		"compile": [
+			"mkdir app/cache",
+			"chmod -R 777 app/cache"
+		]
+	}
+}
