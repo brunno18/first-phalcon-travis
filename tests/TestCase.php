@@ -54,26 +54,36 @@ abstract class TestCase extends PhalconTestCase
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
-        $config = [
-            'dbname'   => 'database.sqlite'
+        $databaseConfig = [
+            'dbname'   => 'tests/test.db'
         ];
         
-        $di->set('db', function () {
-            return new \Phalcon\Db\Adapter\Pdo\Sqlite([$config]);
+        $di->set('db', function () use ($databaseConfig) {
+            return new \Phalcon\Db\Adapter\Pdo\Sqlite($databaseConfig);
         });
         
         $this->setDi($di);
         
         $this->_loaded = true;
         
-        // Drop tables
-        $this->dropTables($di->get('db'));
+        $connection = $di->get('db');
         
-        // Migrate the DB
-        $this->migrateTables($di->get('db'));
-        
-        // Seed the DB
-        $this->seedDatabase($di->get('db'));
+        try {
+            $connection->begin();
+            
+            // Drop tables
+            $this->dropTables($connection);
+            
+            // Migrate the DB
+            $this->migrateTables($connection);
+            
+            // Seed the DB
+            $this->seedDatabase($connection);
+            
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+        }
     }
     
     protected function migrateTables($connection)
