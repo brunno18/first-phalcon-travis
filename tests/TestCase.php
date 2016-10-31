@@ -54,10 +54,12 @@ abstract class TestCase extends PhalconTestCase
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
+        $config = [
+            'dbname'   => 'database.sqlite'
+        ];
+        
         $di->set('db', function () {
-            return new \Phalcon\Db\Adapter\Pdo\Sqlite ([
-                'dbname' => dirname(__DIR__) . '/tests/temp/db_sqlite_test.sqlite'
-            ]);
+            return new \Phalcon\Db\Adapter\Pdo\Sqlite([$config]);
         });
         
         $this->setDi($di);
