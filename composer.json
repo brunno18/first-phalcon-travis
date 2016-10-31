@@ -5,8 +5,8 @@
 	},
 	"require-dev": {
 		"heroku/heroku-buildpack-php": "*",
-        "phpunit/phpunit": "~4.5",
-        "techpivot/phalcon-ci-installer": "~1.0"
+        "phpunit/phpunit": "^4.8",
+        "phalcon/incubator": "2.0.*"
 	},
 	"scripts": {
 		"compile": [
