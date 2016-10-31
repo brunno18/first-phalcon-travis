@@ -11,12 +11,16 @@ use Phalcon\Test\UnitTestCase as PhalconTestCase;
 
 abstract class TestCase extends PhalconTestCase
 {
+    /**
+     * @var \Voice\Cache
+     */
     protected $_cache;
+    
     /**
      * @var \Phalcon\Config
      */
-    
     protected $_config;
+    
     /**
      * @var bool
      */
@@ -27,21 +31,26 @@ abstract class TestCase extends PhalconTestCase
         parent::setUp();
         // Load any additional services that might be required during testing
         $di = Di::getDefault();
+        
         $di->set('modelsManager', function () {
             return new \Phalcon\Mvc\Model\Manager();
         });
+        
         $di->set('modelsMetadata', function () {
             return new \Phalcon\Mvc\Model\Metadata\Memory();
         });
+        
         $di->set('security', function () {
             $security = new \Phalcon\Security();
             return $security;
         }, true);
+        
         $di->set('session', function () {
             $session = new \Phalcon\Session\Adapter\Files();
             $session->start();
             return $session;
         });
+        
         /**
          * Database connection is created based in the parameters defined in the configuration file
          */
@@ -50,12 +59,17 @@ abstract class TestCase extends PhalconTestCase
                 'dbname' => dirname(__DIR__) . '/tests/temp/db_sqlite_test.sqlite'
             ]);
         });
+        
         $this->setDi($di);
+        
         $this->_loaded = true;
+        
         // Drop tables
         $this->dropTables($di->get('db'));
+        
         // Migrate the DB
         $this->migrateTables($di->get('db'));
+        
         // Seed the DB
         $this->seedDatabase($di->get('db'));
     }

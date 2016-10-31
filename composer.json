@@ -6,7 +6,7 @@
 	"require-dev": {
 		"heroku/heroku-buildpack-php": "*",
         "phpunit/phpunit": "^4.8",
-        "phalcon/incubator": "2.0.*"
+        "phalcon/incubator": "^2.0"
 	},
 	"scripts": {
 		"compile": [
